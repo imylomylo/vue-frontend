@@ -21,7 +21,10 @@
     "node-sass": "^3.8.0",
     "sass-loader": "^4.0.1",
     "vue-loader": "^9.2.2",
+    "vue-resource": "^0.9.3",
+    "vue-router": "^2.0.0-rc.4",
     "vue-strap": "^1.1.7",
+    "vuex": "^1.0.0-rc.2",
     "webpack": "^2.1.0-beta.21",
     "webpack-dev-server": "^2.1.0-beta.0"
   }
