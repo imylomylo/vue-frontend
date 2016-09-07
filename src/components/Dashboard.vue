@@ -1,5 +1,7 @@
 <template>
-    <h1>Dashboard</h1>
+    <div class="container">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
