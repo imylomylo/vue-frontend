@@ -1,38 +1,72 @@
-export default {
-  login(email, password, callback) {
-    callback = arguments[arguments.length - 1]
+import Vue from 'vue'
+import Config from './config'
 
-    if (localStorage.token) {
-      if (callback) callback(true)
-      this.onChange(true)
-      return
-    }
+class Auth  {
+  constructor() {
+  }
 
-    pretendRequest(email, password, (res) => {
-      if (res.authenticated) {
-        localStorage.token = res.token
-        if (callback) callback(true)
-        this.onChange(true)
-      } else {
-        if (callback) callback(false)
-        this.onChange(false)
-      }
-    })
-  },
+  getToken(){
+    this.token = localStorage.token
+  }
 
-  getToken() {
-    return localStorage.token
-  },
-
-  logout(callback) {
+  deleteToken(){
     delete localStorage.token
-    if (callback) callback()
-    this.onChange(false)
-  },
+  }
 
-  loggedIn() {
-    return !!localStorage.token
-  },
+  check () {
+    if(!this.getToken())
+      return false
 
-  onChange() {}
+    this.setup();
+
+    return true
+  }
+
+  setToken (token) {
+    localStorage.token = token
+  }
+
+  login (credentials, callback) {
+    let that = this
+
+    if(this.getToken())
+      return true
+
+    Vue.http.post(Config.api.auth_url, credentials)
+      .then((response) => {
+        this.setToken(response.data.token)
+
+        if(callback)
+          callback(true)
+      }, (response) => {
+        console.error(response)
+        if(callback)
+          callback(false)
+      })
+  }
+
+  logout () {
+    this.deleteToken()
+  }
+
+  setupRouter () {
+    Vue.http.headers.common['Authorization'] = 'Bearer ' + this.getToken()
+    this.setupInterceptor()
+  }
+
+  setupInterceptor () {
+    Vue.http.interceptors.push((request, next) => {
+      next((response) => {
+        if(response.status == 401){
+          console.log('token invalid', response)
+        }
+      })
+    });
+  }
+
+
 }
+
+const auth = new Auth()
+
+export default auth

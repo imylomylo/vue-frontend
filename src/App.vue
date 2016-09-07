@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <h1>Frontend</h1>
-
     <router-view></router-view>
   </div>
 </template>
@@ -12,13 +10,10 @@ import auth from './auth.js'
 export default {
   data () {
     return {
-      loggedIn: auth.loggedIn()
+      loggedIn: auth.check()
     }
   },
   created () {
-    auth.onChange = loggedIn => {
-      this.loggedIn = loggedIn
-    }
   }
 }
 </script>
