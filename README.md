@@ -6,6 +6,7 @@ I build this frontend boilerplate to use on my projecs, he includes:
 - Vuex
 - Vue-router
 - Vue-resource
+- Vee-validator
 - Webpack
     - SASS compilation
 - JWT authentication
